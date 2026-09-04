@@ -25,6 +25,11 @@ export default async function handler(req, res) {
 
   try {
     const metadata = {
+      // Same live Stripe account is shared with other sites (e.g.
+      // footmillion) whose webhooks also listen for checkout.session.completed
+      // account-wide — this tag lets each site's webhook ignore the others'
+      // checkout sessions instead of misreading their metadata as its own.
+      app: 'elite-tipsters',
       planId,
       telegram_user_id: String(session.id),
       telegram_name: session.first_name,

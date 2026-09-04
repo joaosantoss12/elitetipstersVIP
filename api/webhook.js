@@ -61,6 +61,13 @@ export default async function handler(req, res) {
   }
 
   const session = event.data.object
+
+  // Same live Stripe account is shared with other sites, whose webhooks also
+  // receive this event type account-wide — ignore anything not tagged as ours.
+  if (session.metadata?.app !== 'elite-tipsters') {
+    return res.status(200).json({ received: true, skipped: 'not elite-tipsters' })
+  }
+
   const telegramUserId = session.metadata?.telegram_user_id
   const planId = session.metadata?.planId
   const plan = planId ? PLANS[planId] : null
