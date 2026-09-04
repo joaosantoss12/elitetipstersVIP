@@ -162,6 +162,7 @@ function App() {
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [noticeDismissed, setNoticeDismissed] = useState(false)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const isSuccess = new URLSearchParams(window.location.search).get('success') === '1'
@@ -273,6 +274,58 @@ function App() {
       <Navbar tgUser={tgUser} onLogout={logout} status={status} />
 
       {isSuccess && <SuccessBanner />}
+
+      {/* ── Telegram notice — profile when logged in, warning otherwise ── */}
+      {authChecked && tgUser && !noticeDismissed && (
+        <div className="tg-notice tg-notice--ready">
+          <div className="tg-notice-row">
+            {tgUser.photo_url && (
+              <img className="tg-avatar" src={tgUser.photo_url} alt={tgUser.first_name} referrerPolicy="no-referrer" />
+            )}
+            <div className="tg-notice-info">
+              <span className="tg-notice-label">Sessão iniciada</span>
+              <span className="tg-auth-name">{tgUser.first_name}</span>
+              {tgUser.username && <span className="tg-auth-username">@{tgUser.username}</span>}
+            </div>
+            <button
+              onClick={logout}
+              className="tg-notice-close"
+              aria-label="Terminar sessão"
+              title="Terminar sessão"
+              type="button"
+            >
+              ✕
+            </button>
+          </div>
+          {status.kind === 'ready' && (
+            <a className="btn-primary btn-full tg-notice-cta" href={status.telegramLink} target="_blank" rel="noopener noreferrer">
+              Entrar no Grupo VIP
+            </a>
+          )}
+          {status.kind === 'none' && (
+            <div className="tg-notice-warning">⚠ Sem subscrição ativa</div>
+          )}
+        </div>
+      )}
+      {authChecked && !tgUser && !noticeDismissed && (
+        <div className="tg-notice tg-notice--warn">
+          <button
+            onClick={() => setNoticeDismissed(true)}
+            className="tg-notice-close"
+            aria-label="Fechar"
+            type="button"
+          >
+            ✕
+          </button>
+          <p className="tg-notice-text">
+            ⚠ É <strong>obrigatório</strong> iniciar sessão com o Telegram para comprar.
+            Depois de pagares, voltas aqui para receberes o link do grupo.
+          </p>
+          <div className="tg-notice-widget">
+            <TelegramLoginWidget />
+          </div>
+        </div>
+      )}
 
       {/* ── Hero ── */}
       <section className="hero">
