@@ -30,7 +30,7 @@ const PLANS: { id: PlanId; label: string; price: string; per: string; save?: str
   {
     id: 'monthly',
     label: '1 Mês',
-    price: '24,59',
+    price: '1,00',
     per: '/mês',
     features: ['Acesso total ao grupo VIP', 'Picks e análises diárias', 'Suporte direto no Telegram'],
   },
