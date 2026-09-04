@@ -30,7 +30,7 @@ const PLANS: { id: PlanId; label: string; price: string; per: string; save?: str
   {
     id: 'monthly',
     label: '1 Mês',
-    price: '1,00',
+    price: '24,59',
     per: '/mês',
     features: ['Acesso total ao grupo VIP', 'Picks e análises diárias', 'Suporte direto no Telegram'],
   },
@@ -109,7 +109,7 @@ function TelegramLoginWidget() {
   )
 }
 
-function Navbar({ tgUser, onLogout }: { tgUser: TgUser | null; onLogout: () => void }) {
+function Navbar({ tgUser, onLogout, status }: { tgUser: TgUser | null; onLogout: () => void; status: SubStatus }) {
   return (
     <header className="navbar">
       <div className="nav-inner">
@@ -124,6 +124,11 @@ function Navbar({ tgUser, onLogout }: { tgUser: TgUser | null; onLogout: () => v
               <span className="tg-auth-name">{tgUser.first_name}</span>
               {tgUser.username && <span className="tg-auth-username">@{tgUser.username}</span>}
             </div>
+            {status.kind === 'ready' && (
+              <a className="btn-nav" href={status.telegramLink} target="_blank" rel="noopener noreferrer">
+                Entrar no Grupo
+              </a>
+            )}
             <button className="tg-logout-btn" onClick={onLogout} type="button">Sair</button>
           </div>
         ) : (
@@ -265,7 +270,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar tgUser={tgUser} onLogout={logout} />
+      <Navbar tgUser={tgUser} onLogout={logout} status={status} />
 
       {isSuccess && <SuccessBanner />}
 
