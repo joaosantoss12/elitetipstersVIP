@@ -45,16 +45,21 @@ Falta:
 
 ## 4. Stripe
 
-1. Usa a tua conta Stripe (live) já existente, ou cria uma nova.
-2. Não é preciso criar Produtos/Preços no dashboard — o checkout cria os
-   `price_data` on-the-fly a partir de `api/_lib/plans.js` (valores em
-   cêntimos: 2459 / 6149 / 24599 = 24,59€ / 61,49€ / 245,99€).
-3. Developers → API keys → `STRIPE_SECRET_KEY`.
-4. Developers → Webhooks → Add endpoint:
+✅ Já feito: usa a **mesma conta Stripe do FOOTMILLION VIP** (live) —
+`STRIPE_SECRET_KEY` já está em `.env.local`. Não é preciso criar
+Produtos/Preços no dashboard — o checkout cria os `price_data` on-the-fly a
+partir de `api/_lib/plans.js` (cêntimos: 2459 / 6149 / 24599 = 24,59€ /
+61,49€ / 245,99€).
+
+Falta: este site tem o seu **próprio endpoint de webhook** (URL diferente do
+footmillion), por isso precisa de um Signing secret novo — não dá para
+reutilizar o `whsec_` do footmillion.
+
+1. Developers → Webhooks → Add endpoint (na mesma conta Stripe):
    - URL: `https://<o-teu-dominio>/api/webhook`   (⚠️ tem de ser exatamente
      este path, terminar em `/api/webhook`)
    - Evento: `checkout.session.completed`
-   - Copia o **Signing secret** → `STRIPE_WEBHOOK_SECRET`.
+   - Copia o **Signing secret** → `STRIPE_WEBHOOK_SECRET` no `.env.local`.
 
 ## 5. Sessão
 

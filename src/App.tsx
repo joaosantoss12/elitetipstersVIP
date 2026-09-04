@@ -22,6 +22,7 @@ type PlanId = 'monthly' | 'quarterly' | 'yearly'
 type SubStatus =
   | { kind: 'loading' }
   | { kind: 'none' }
+  | { kind: 'logged_out' }
   | { kind: 'pending'; plan: string; expiresAt: string }
   | { kind: 'ready'; plan: string; expiresAt: string; telegramLink: string }
 
@@ -366,7 +367,7 @@ function App() {
             </div>
           )}
 
-          {(status.kind === 'none' || status.kind === 'loading') && (
+          {(status.kind === 'none' || status.kind === 'loading' || status.kind === 'logged_out') && (
             <div className="gate-card">
               {authChecked && tgUser ? (
                 <>
