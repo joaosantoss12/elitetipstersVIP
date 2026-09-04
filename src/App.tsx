@@ -293,6 +293,46 @@ function App() {
         </div>
       </section>
 
+      {/* ── Pricing ── */}
+      <section className="section pricing" id="pricing">
+        <div className="container">
+          <p className="section-tag">Planos</p>
+          <h2 className="section-title">Escolhe o teu acesso VIP</h2>
+          <p className="section-sub">Sem letras pequenas. Cancela quando quiseres — o acesso simplesmente não renova.</p>
+          <div className="pricing-grid">
+            {PLANS.map((plan) => (
+              <div key={plan.id} className={`plan-card${plan.featured ? ' plan-card--featured' : ''}`}>
+                {plan.featured && <span className="plan-badge">Mais popular</span>}
+                <span className="plan-name">{plan.label}</span>
+                <div>
+                  <div className="plan-price">
+                    <span className="plan-price-curr">€</span>
+                    <span className="plan-price-num">{plan.price}</span>
+                  </div>
+                  <span className="plan-per">{plan.per}</span>
+                </div>
+                {plan.save && <span className="plan-save">{plan.save}</span>}
+                <ul className="plan-features">
+                  {plan.features.map((f) => (
+                    <li key={f}><span className="check">✓</span>{f}</li>
+                  ))}
+                </ul>
+                <button
+                  className="btn-primary btn-full"
+                  onClick={() => buyPlan(plan.id)}
+                  disabled={loadingPlan !== null}
+                  type="button"
+                >
+                  {loadingPlan === plan.id ? <span className="spinner" /> : 'Quero este plano'}
+                </button>
+              </div>
+            ))}
+          </div>
+          {error && <p className="error-msg">{error}</p>}
+          <p className="price-secure">🔒 Pagamento processado de forma segura via Stripe</p>
+        </div>
+      </section>
+
       {/* ── Credentials ── */}
       <div className="creds">
         <div className="creds-inner">
@@ -398,46 +438,6 @@ function App() {
               )}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ── Pricing ── */}
-      <section className="section pricing" id="pricing">
-        <div className="container">
-          <p className="section-tag">Planos</p>
-          <h2 className="section-title">Escolhe o teu acesso VIP</h2>
-          <p className="section-sub">Sem letras pequenas. Cancela quando quiseres — o acesso simplesmente não renova.</p>
-          <div className="pricing-grid">
-            {PLANS.map((plan) => (
-              <div key={plan.id} className={`plan-card${plan.featured ? ' plan-card--featured' : ''}`}>
-                {plan.featured && <span className="plan-badge">Mais popular</span>}
-                <span className="plan-name">{plan.label}</span>
-                <div>
-                  <div className="plan-price">
-                    <span className="plan-price-curr">€</span>
-                    <span className="plan-price-num">{plan.price}</span>
-                  </div>
-                  <span className="plan-per">{plan.per}</span>
-                </div>
-                {plan.save && <span className="plan-save">{plan.save}</span>}
-                <ul className="plan-features">
-                  {plan.features.map((f) => (
-                    <li key={f}><span className="check">✓</span>{f}</li>
-                  ))}
-                </ul>
-                <button
-                  className="btn-primary btn-full"
-                  onClick={() => buyPlan(plan.id)}
-                  disabled={loadingPlan !== null}
-                  type="button"
-                >
-                  {loadingPlan === plan.id ? <span className="spinner" /> : 'Quero este plano'}
-                </button>
-              </div>
-            ))}
-          </div>
-          {error && <p className="error-msg">{error}</p>}
-          <p className="price-secure">🔒 Pagamento processado de forma segura via Stripe</p>
         </div>
       </section>
 
