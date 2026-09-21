@@ -1,4 +1,4 @@
--- tipsterVIP (Elite Tipsters) — Supabase schema.
+-- tipsterVIP (Elite Tipsters EPC) — Supabase schema.
 -- Run once in a NEW Supabase project's SQL editor (Settings > SQL Editor).
 -- Both tables are only ever touched by the server (service-role key) — the
 -- Vercel functions in api/ AND the kick-bot/ daily scheduler both use it —

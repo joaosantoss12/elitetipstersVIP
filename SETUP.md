@@ -1,6 +1,6 @@
 # tipsterVIP — setup
 
-Site de acesso VIP do **Elite Tipsters** (login Telegram + pagamento Stripe +
+Site de acesso VIP do **Elite Tipsters EPC** (login Telegram + pagamento Stripe +
 link automático para o grupo privado do Telegram), com o tema visual do
 "Tipster do Pedrito" (dourado + esmeralda, private club).
 

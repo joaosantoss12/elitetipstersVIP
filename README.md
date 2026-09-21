@@ -1,6 +1,6 @@
 # elitetipstersVIP
 
-Site de acesso VIP do Elite Tipsters — login com Telegram, pagamento via Stripe
+Site de acesso VIP do Elite Tipsters EPC — login com Telegram, pagamento via Stripe
 e link automático para o grupo privado do Telegram.
 
 Ver [SETUP.md](./SETUP.md) para o passo a passo completo (Supabase, bot do

@@ -22,7 +22,7 @@ async def send_renewal_dm(bot: Bot, telegram_user_id: int, days_left: int, plan:
             telegram_user_id,
             f"⏳ <b>A tua subscrição VIP expira em {days_left} {dias}</b>\n\n"
             f"Plano: {plan_label}\n\n"
-            f"Renova agora para não perderes o acesso ao Elite Tipsters.\n\n"
+            f"Renova agora para não perderes o acesso ao Elite Tipsters EPC.\n\n"
             f"🔄 Se renovares antes de expirar, os dias que ainda tens são "
             f"<b>somados</b> ao novo período — não perdes nada.",
             parse_mode="HTML",

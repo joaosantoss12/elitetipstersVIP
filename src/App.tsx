@@ -78,6 +78,25 @@ const FAQS = [
   },
 ]
 
+function IconAlert() {
+  return (
+    <svg className="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  )
+}
+
+function IconLock() {
+  return (
+    <svg className="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  )
+}
+
 // ── Telegram login widget: injects oauth.telegram.org's script next to a
 // button it turns into the login trigger. This site has its own dedicated
 // bot (TELEGRAM_CLIENT_ID) — its domain must be registered with @BotFather
@@ -114,8 +133,8 @@ function Navbar({ tgUser, onLogout, status }: { tgUser: TgUser | null; onLogout:
     <header className="navbar">
       <div className="nav-inner">
         <div className="logo">
-          <span style={{ fontSize: '1.4rem' }}>👑</span>
-          <span className="logo-text">Elite Tipsters</span>
+          <img className="logo-crest" src="/logo.webp" alt="" width={40} height={40} />
+          <span className="logo-text">Elite Tipsters EPC</span>
         </div>
         {tgUser ? (
           <div className="tg-auth-bar" style={{ margin: 0 }}>
@@ -303,7 +322,7 @@ function App() {
             </a>
           )}
           {status.kind === 'none' && (
-            <div className="tg-notice-warning">⚠ Sem subscrição ativa</div>
+            <div className="tg-notice-warning"><IconAlert /> Sem subscrição ativa</div>
           )}
         </div>
       )}
@@ -318,7 +337,7 @@ function App() {
             ✕
           </button>
           <p className="tg-notice-text">
-            ⚠ É <strong>obrigatório</strong> iniciar sessão com o Telegram para comprar.
+            <IconAlert /> É <strong>obrigatório</strong> iniciar sessão com o Telegram para comprar.
             Depois de pagares, voltas aqui para receberes o link do grupo.
           </p>
           <div className="tg-notice-widget">
@@ -330,9 +349,11 @@ function App() {
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero-content">
-
+          <div className="hero-crest-wrap">
+            <img className="hero-crest" src="/logo.webp" alt="Elite Tipsters EPC" width={168} height={168} fetchPriority="high" />
+          </div>
           <p className="ornament">Grupo Privado · Acesso Exclusivo</p>
-          <h1 className="hero-title">O clube VIP do Elite Tipsters</h1>
+          <h1 className="hero-title">O clube VIP do Elite Tipsters EPC</h1>
           <p className="hero-sub">
             Análises desportivas e apostas recomendadas <em>todos os dias</em>, direto no grupo
             privado de Telegram. Entra com a tua conta, escolhe o teu plano, e recebe o acesso
@@ -382,7 +403,7 @@ function App() {
             ))}
           </div>
           {error && <p className="error-msg">{error}</p>}
-          <p className="price-secure">🔒 Pagamento processado de forma segura via Stripe</p>
+          <p className="price-secure"><IconLock /> Pagamento processado de forma segura via Stripe</p>
         </div>
       </section>
 
@@ -476,7 +497,7 @@ function App() {
                       {tgUser.username && <span className="tg-auth-username">@{tgUser.username}</span>}
                     </div>
                   </div>
-                  <div className="gate-none-warning">⚠ Sem subscrição ativa</div>
+                  <div className="gate-none-warning"><IconAlert /> Sem subscrição ativa</div>
                   <p className="gate-sub" style={{ marginTop: '1rem' }}>Escolhe um plano abaixo para ativar o teu acesso.</p>
                 </>
               ) : (
@@ -516,12 +537,12 @@ function App() {
       {/* ── Footer ── */}
       <footer className="footer">
         <div className="footer-inner">
-          <span className="logo-crest" style={{ fontSize: '2rem' }}>👑</span>
+          <img className="logo-crest" src="/logo.webp" alt="" width={56} height={56} loading="lazy" />
           <p className="footer-disclaimer">
-            ⚠️ As análises partilhadas no grupo VIP são de caráter informativo. Apostar pode
+            As análises partilhadas no grupo VIP são de caráter informativo. Apostar pode
             criar dependência. Joga com responsabilidade. +18.
           </p>
-          <p className="footer-copy">© {new Date().getFullYear()} Elite Tipsters</p>
+          <p className="footer-copy">© {new Date().getFullYear()} Elite Tipsters EPC</p>
         </div>
       </footer>
     </div>
