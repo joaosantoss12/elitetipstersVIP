@@ -48,8 +48,8 @@ Falta:
 ✅ Já feito: usa a **mesma conta Stripe do FOOTMILLION VIP** (live) —
 `STRIPE_SECRET_KEY` já está em `.env.local`. Não é preciso criar
 Produtos/Preços no dashboard — o checkout cria os `price_data` on-the-fly a
-partir de `api/_lib/plans.js` (cêntimos: 2459 / 6149 / 24599 = 24,59€ /
-61,49€ / 245,99€).
+partir de `api/_lib/plans.js` (cêntimos: 1200 / 3000 / 9600 = 12€ /
+30€ / 96€).
 
 Falta: este site tem o seu **próprio endpoint de webhook** (URL diferente do
 footmillion), por isso precisa de um Signing secret novo — não dá para

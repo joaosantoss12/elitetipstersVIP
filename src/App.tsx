@@ -30,14 +30,14 @@ const PLANS: { id: PlanId; label: string; price: string; per: string; save?: str
   {
     id: 'monthly',
     label: '1 Mês',
-    price: '24,59',
+    price: '12',
     per: '/mês',
     features: ['Acesso total ao grupo VIP', 'Picks e análises diárias', 'Suporte direto no Telegram'],
   },
   {
     id: 'quarterly',
     label: '3 Meses',
-    price: '61,49',
+    price: '30',
     per: '/3 meses',
     save: 'Poupa ~17%',
     featured: true,
@@ -46,9 +46,9 @@ const PLANS: { id: PlanId; label: string; price: string; per: string; save?: str
   {
     id: 'yearly',
     label: '1 Ano',
-    price: '245,99',
+    price: '96',
     per: '/ano',
-    save: 'Poupa ~17%',
+    save: 'Poupa ~33%',
     features: ['Acesso total ao grupo VIP', 'Picks e análises diárias', 'Suporte direto no Telegram'],
   },
 ]
