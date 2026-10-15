@@ -24,6 +24,13 @@ export default async function handler(req, res) {
       return res.status(200).json({ kind: 'none' })
     }
 
+    // Expired but not yet deactivated by the kick-bot: treat as no
+    // subscription so the member sees the plans to renew, instead of a
+    // "pending" state whose link generation would be refused (409).
+    if (new Date(sub.expires_at).getTime() <= Date.now()) {
+      return res.status(200).json({ kind: 'none' })
+    }
+
     if (!sub.invite_link_id) {
       return res.status(200).json({ kind: 'pending', plan: sub.plan, expiresAt: sub.expires_at })
     }

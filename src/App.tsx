@@ -278,6 +278,9 @@ function App() {
       const res = await fetch('/api/subscription-link', { method: 'POST' })
       if (res.ok) {
         await refreshStatus()
+      } else if (res.status === 409) {
+        setError('A tua subscrição expirou. Renova escolhendo um plano acima.')
+        await refreshStatus()
       } else {
         setError('Não foi possível gerar o link. Tenta novamente ou contacta o suporte.')
       }
@@ -483,6 +486,7 @@ function App() {
               <button className="btn-nav" onClick={generateLink} disabled={generating} type="button">
                 {generating ? 'A gerar...' : 'Gerar link de acesso'}
               </button>
+              {error && <p className="error-msg">{error}</p>}
             </div>
           )}
 
