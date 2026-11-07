@@ -32,12 +32,13 @@ export function verifySession(cookies) {
   }
 }
 
-export function setSessionCookie(res, session) {
+export function sessionCookieHeader(session) {
   const value = signSession(session)
-  res.setHeader(
-    'Set-Cookie',
-    `${SESSION_COOKIE}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${60 * 60 * 24 * 30}`
-  )
+  return `${SESSION_COOKIE}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${60 * 60 * 24 * 30}`
+}
+
+export function setSessionCookie(res, session) {
+  res.setHeader('Set-Cookie', sessionCookieHeader(session))
 }
 
 export function clearSessionCookie(res) {

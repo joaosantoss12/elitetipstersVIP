@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, type MouseEvent } from 'react'
 import './App.css'
 
 const TELEGRAM_CLIENT_ID = import.meta.env.VITE_TELEGRAM_CLIENT_ID as string
+const LOGIN_ERROR = 'Não foi possível iniciar sessão com o Telegram. Tenta novamente ou contacta o suporte.'
 
 type TgUser = {
   username?: string
@@ -14,6 +15,7 @@ type TelegramAuthData = { id_token?: string; error?: string }
 declare global {
   interface Window {
     onTelegramAuth?: (data: TelegramAuthData) => void
+    TelegramWebviewProxy?: unknown
   }
 }
 
@@ -97,6 +99,21 @@ function IconLock() {
   )
 }
 
+function usesRedirectLogin() {
+  // Telegram's own in-app browser has a native login in telegram-login.js.
+  if (window.TelegramWebviewProxy) return false
+  const iPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
+  return iPadOS || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+}
+
+// telegram-login.js opens its popup from a click listener on `document`. On
+// mobile we stop the click before it gets there and log in on the same tab.
+function onLoginClick(e: MouseEvent) {
+  if (!usesRedirectLogin()) return
+  e.stopPropagation()
+  window.location.href = '/api/telegram-start'
+}
+
 // ── Telegram login widget: injects oauth.telegram.org's script next to a
 // button it turns into the login trigger. This site has its own dedicated
 // bot (TELEGRAM_CLIENT_ID) — its domain must be registered with @BotFather
@@ -121,7 +138,7 @@ function TelegramLoginWidget() {
 
   return (
     <div ref={containerRef} className="tg-login-widget">
-      <button className="tg-auth-button" data-style="shine" type="button">
+      <button className="tg-auth-button" data-style="shine" type="button" onClick={onLoginClick}>
         Entrar com Telegram
       </button>
     </div>
@@ -179,7 +196,10 @@ function App() {
   const [status, setStatus] = useState<SubStatus>({ kind: 'loading' })
   const [loadingPlan, setLoadingPlan] = useState<PlanId | null>(null)
   const [generating, setGenerating] = useState(false)
-  const [error, setError] = useState('')
+  // Back from a failed same-tab login (/api/telegram-callback).
+  const [error, setError] = useState(() =>
+    new URLSearchParams(window.location.search).get('tg_login') === 'erro' ? LOGIN_ERROR : ''
+  )
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [noticeDismissed, setNoticeDismissed] = useState(false)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -210,7 +230,8 @@ function App() {
   useEffect(() => {
     window.onTelegramAuth = async (data: TelegramAuthData) => {
       if (!data.id_token) {
-        setError('Login com Telegram falhou. Tenta novamente.')
+        // The user closed the window: nothing to report.
+        if (data.error !== 'popup_closed') setError(LOGIN_ERROR)
         return
       }
       const res = await fetch('/api/telegram-login', {
@@ -219,9 +240,10 @@ function App() {
         body: JSON.stringify({ id_token: data.id_token }),
       })
       if (!res.ok) {
-        setError('Login com Telegram falhou. Tenta novamente.')
+        setError(LOGIN_ERROR)
         return
       }
+      setError('')
       await refreshAuth()
     }
   }, [refreshAuth])
@@ -235,6 +257,13 @@ function App() {
   useEffect(() => {
     refreshAuth()
   }, [refreshAuth])
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (!url.searchParams.has('tg_login')) return
+    url.searchParams.delete('tg_login')
+    window.history.replaceState(null, '', url)
+  }, [])
 
   // Poll while we're waiting for the bot to generate the invite link.
   useEffect(() => {
@@ -511,6 +540,7 @@ function App() {
                     É obrigatório iniciar sessão com o Telegram para comprar. Depois do pagamento,
                     o link de acesso ao grupo aparece aqui — sem precisares de abrir o Telegram.
                   </p>
+                  {error && <p className="error-msg">{error}</p>}
                   <TelegramLoginWidget />
                 </>
               )}

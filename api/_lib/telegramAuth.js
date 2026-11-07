@@ -1,5 +1,18 @@
 import { jwtVerify, createRemoteJWKSet } from 'jose'
 
+/** Holds state + PKCE verifier between /api/telegram-start and /api/telegram-callback. */
+export const OAUTH_COOKIE = 'tg_oauth'
+
+export function oauthCookieHeader(value, maxAgeSeconds) {
+  return `${OAUTH_COOKIE}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/api; Max-Age=${maxAgeSeconds}`
+}
+
+export function requestOrigin(req) {
+  return `${req.headers['x-forwarded-proto'] ?? 'https'}://${req.headers.host}`
+}
+
+export const oauthRedirectUri = (origin) => `${origin}/api/telegram-callback`
+
 const JWKS = createRemoteJWKSet(
   new URL('https://oauth.telegram.org/.well-known/jwks.json')
 )
